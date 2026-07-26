@@ -2,6 +2,8 @@ import { useState, type FormEvent } from 'react'
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react'
 import { financeDataService, type SnapshotSummary } from '../data'
 import { getErrorMessage } from '../utils/errors'
+import { useTheme } from '../hooks/useTheme'
+import { Moon, Sun } from 'lucide-react'
 
 interface SidebarProps {
   snapshots: SnapshotSummary[]
@@ -18,6 +20,7 @@ export function Sidebar({ snapshots, loading, error, selectedId, onSelect, onCre
   const [name, setName] = useState('')
   const [saving, setSaving] = useState(false)
   const [formError, setFormError] = useState<string | null>(null)
+  const { theme, toggleTheme } = useTheme()
 
   async function handleCreate(e: FormEvent) {
     e.preventDefault()
@@ -54,6 +57,9 @@ export function Sidebar({ snapshots, loading, error, selectedId, onSelect, onCre
     <aside className="flex w-72 shrink-0 flex-col border-r border-border-soft bg-panel">
       <div className="flex items-center justify-between px-6 pt-6 pb-4">
         <h2 className="text-xs font-semibold tracking-[0.2em] text-muted">SNAPSHOTS</h2>
+        <button onClick={toggleTheme} aria-label="Toggle theme" className="...">
+        {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+      </button>
         <button
           onClick={() => setCollapsed(true)}
           aria-label="Collapse sidebar"

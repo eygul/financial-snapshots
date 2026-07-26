@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 /*
   Design tokens, derived from the reference mockup:
@@ -20,6 +21,17 @@
   --color-accent-blue: #2f4bff;
   --color-accent-red: #c2402a;
   --color-accent-green: #7a9f1e;
+}
+
+.dark {
+  --color-paper: #1c1a16;
+  --color-panel: #24221c;
+  --color-border-soft: #38352c;
+  --color-ink: #f2f0e8;
+  --color-muted: #7d7a6f;
+  --color-accent-blue: #5b74ff;
+  --color-accent-red: #e0604a;
+  --color-accent-green: #9bc93a;
 }
 
 body {

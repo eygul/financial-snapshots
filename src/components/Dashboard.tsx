@@ -9,6 +9,7 @@ export function Dashboard() {
   const { snapshots, loading, error, refresh } = useSnapshots()
   const [selectedId, setSelectedId] = useState<string | null>(null)
 
+
   // Default to the most recent snapshot once the list loads.
   useEffect(() => {
     if (!selectedId && snapshots.length > 0) {
