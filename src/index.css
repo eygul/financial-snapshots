@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+/*
+  Design tokens, derived from the reference mockup:
+  a warm paper background, monospace ledger typography, and three accent
+  colors marking assets (blue), expenses (red), and income (green).
+  Tailwind v4 turns each of these into a matching utility automatically,
+  e.g. --color-accent-blue -> bg-accent-blue / text-accent-blue / border-accent-blue.
+*/
+@theme {
+  --font-mono:
+    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --color-paper: #f2f0e8;
+  --color-panel: #eae6db;
+  --color-border-soft: #dbd6c8;
+  --color-ink: #1c1a16;
+  --color-muted: #9a9686;
+
+  --color-accent-blue: #2f4bff;
+  --color-accent-red: #c2402a;
+  --color-accent-green: #7a9f1e;
+}
+
+body {
+  font-family: var(--font-mono);
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+}
