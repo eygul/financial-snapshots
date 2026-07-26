@@ -21,7 +21,7 @@ export function SnapshotView({ detail, loading, onChanged }: Props) {
         </div>
         <div className="flex gap-10 text-right">
           <div>
-            <div className="text-xs tracking-[0.2em] text-muted">NET WORTH</div>
+            <div className="text-xs tracking-[0.2em] text-muted">PROJECTED NET WORTH</div>
             <div
               className={`text-3xl font-bold ${totals.netWorth >= 0 ? 'text-accent-green' : 'text-accent-red'}`}
             >
