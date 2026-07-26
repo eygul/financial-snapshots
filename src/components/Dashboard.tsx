@@ -5,6 +5,7 @@ import { HelpButton } from './HelpButton'
 import { useSnapshots } from '../hooks/useSnapshots'
 import { useSnapshotDetail } from '../hooks/useSnapshotDetail'
 
+
 export function Dashboard() {
   const { snapshots, loading, error, refresh } = useSnapshots()
   const [selectedId, setSelectedId] = useState<string | null>(null)
@@ -24,6 +25,11 @@ export function Dashboard() {
     refresh: refreshDetail,
   } = useSnapshotDetail(selectedId)
 
+  async function handleDeleted(id: string) {
+  await refresh()
+  if (selectedId === id) setSelectedId(null)
+}
+
   async function handleCreated(id: string) {
     await refresh()
     setSelectedId(id)
@@ -38,6 +44,7 @@ export function Dashboard() {
         selectedId={selectedId}
         onSelect={setSelectedId}
         onCreated={handleCreated}
+        onDeleted={handleDeleted}
       />
       <main className="flex-1 overflow-y-auto">
         {detailError && <p className="p-10 text-sm text-accent-red">{detailError}</p>}

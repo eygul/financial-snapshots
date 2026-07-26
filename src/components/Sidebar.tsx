@@ -3,7 +3,7 @@ import { ChevronLeft, ChevronRight, Plus } from 'lucide-react'
 import { financeDataService, type SnapshotSummary } from '../data'
 import { getErrorMessage } from '../utils/errors'
 import { useTheme } from '../hooks/useTheme'
-import { Moon, Sun } from 'lucide-react'
+import { Moon, Sun, X } from 'lucide-react'
 
 interface SidebarProps {
   snapshots: SnapshotSummary[]
@@ -12,15 +12,30 @@ interface SidebarProps {
   selectedId: string | null
   onSelect: (id: string) => void
   onCreated: (id: string) => void
+  onDeleted: (id: string) => void
 }
 
-export function Sidebar({ snapshots, loading, error, selectedId, onSelect, onCreated }: SidebarProps) {
+export function Sidebar({ snapshots, loading, error, selectedId, onSelect, onCreated, onDeleted }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false)
   const [creating, setCreating] = useState(false)
   const [name, setName] = useState('')
   const [saving, setSaving] = useState(false)
   const [formError, setFormError] = useState<string | null>(null)
   const { theme, toggleTheme } = useTheme()
+  const [deletingId, setDeletingId] = useState<string | null>(null)
+
+  async function handleDelete(id: string) {
+  if (!window.confirm('Delete this snapshot? This removes all its assets, expenses, and income.')) return
+  setDeletingId(id)
+  try {
+    await financeDataService.deleteSnapshot(id)
+    onDeleted(id)
+  } catch (err) {
+    alert(getErrorMessage(err, 'Could not delete that snapshot.'))
+  } finally {
+    setDeletingId(null)
+  }
+}
 
   async function handleCreate(e: FormEvent) {
     e.preventDefault()
@@ -115,24 +130,33 @@ export function Sidebar({ snapshots, loading, error, selectedId, onSelect, onCre
         {loading && <p className="px-6 text-sm text-muted">Loading…</p>}
         {error && <p className="px-6 text-sm text-accent-red">{error}</p>}
         {snapshots.map((snap) => {
-          const active = snap.id === selectedId
-          return (
-            <button
-              key={snap.id}
-              onClick={() => onSelect(snap.id)}
-              className={`block w-full border-t border-border-soft px-6 py-4 text-left transition ${
-                active
-                  ? 'border-l-4 border-l-accent-green bg-paper'
-                  : 'border-l-4 border-l-transparent hover:bg-paper/60'
-              }`}
-            >
-              <div className={`text-sm font-bold ${active ? 'text-accent-green' : 'text-ink'}`}>
-                {snap.name}
-              </div>
-              <div className="text-xs text-muted">{snap.date}</div>
-            </button>
-          )
-        })}
+  const active = snap.id === selectedId
+  return (
+    <div
+      key={snap.id}
+      className={`group flex items-center border-t border-border-soft transition ${
+        active
+          ? 'border-l-4 border-l-accent-green bg-paper'
+          : 'border-l-4 border-l-transparent hover:bg-paper/60'
+      }`}
+    >
+      <button onClick={() => onSelect(snap.id)} className="flex-1 px-6 py-4 text-left">
+        <div className={`text-sm font-bold ${active ? 'text-accent-green' : 'text-ink'}`}>
+          {snap.name}
+        </div>
+        <div className="text-xs text-muted">{snap.date}</div>
+      </button>
+      <button
+        onClick={() => handleDelete(snap.id)}
+        disabled={deletingId === snap.id}
+        aria-label={`Delete ${snap.name}`}
+        className="mr-4 text-muted opacity-0 transition hover:text-accent-red group-hover:opacity-100 disabled:opacity-50"
+      >
+        <X size={14} />
+      </button>
+    </div>
+  )
+})}
         {!loading && snapshots.length === 0 && (
           <p className="px-6 text-sm text-muted">No snapshots yet — create your first one above.</p>
         )}
