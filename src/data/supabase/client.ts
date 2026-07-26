@@ -1,0 +1,16 @@
+import { createClient } from '@supabase/supabase-js'
+import type { Database } from '../../types/database.types'
+
+const url = import.meta.env.VITE_SUPABASE_URL
+const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+
+if (!url || !anonKey) {
+  throw new Error(
+    'Missing Supabase env vars. Copy .env.example to .env and fill in ' +
+      'VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY, then restart the dev server.',
+  )
+}
+
+// Typed with the generated `Database` type so every query below is checked
+// against the real schema (table names, column names, enum values, etc).
+export const supabase = createClient<Database>(url, anonKey)
