@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { ChevronLeft, ChevronRight, Plus } from 'lucide-react'
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Plus } from 'lucide-react'
 import { financeDataService, type SnapshotSummary } from '../data'
 import { getErrorMessage } from '../utils/errors'
 import { useTheme } from '../hooks/useTheme'
@@ -56,20 +56,21 @@ export function Sidebar({ snapshots, loading, error, selectedId, onSelect, onCre
 
   if (collapsed) {
     return (
-      <div className="flex w-12 flex-col items-center border-r border-border-soft bg-panel py-6">
+      <div className="flex h-12 w-full shrink-0 items-center justify-center border-b border-border-soft bg-panel py-2 md:h-auto md:w-12 md:flex-col md:border-b-0 md:border-r md:py-6">
         <button
           onClick={() => setCollapsed(false)}
           aria-label="Expand sidebar"
           className="text-muted transition hover:text-ink"
         >
-          <ChevronRight size={18} />
+          <ChevronDown size={18} className="md:hidden" />
+          <ChevronRight size={18} className="hidden md:block" />
         </button>
       </div>
     )
   }
 
   return (
-    <aside className="flex w-72 shrink-0 flex-col border-r border-border-soft bg-panel">
+    <aside className="flex max-h-[50vh] w-full shrink-0 flex-col border-b border-border-soft bg-panel md:h-full md:max-h-none md:w-72 md:border-b-0 md:border-r">
       <div className="flex items-center justify-between px-6 pt-6 pb-4">
         <h2 className="text-xs font-semibold tracking-[0.2em] text-muted">SNAPSHOTS</h2>
         <button onClick={toggleTheme} aria-label="Toggle theme" className="...">
@@ -80,7 +81,8 @@ export function Sidebar({ snapshots, loading, error, selectedId, onSelect, onCre
           aria-label="Collapse sidebar"
           className="text-muted transition hover:text-ink"
         >
-          <ChevronLeft size={16} />
+          <ChevronUp size={16} className="md:hidden" />
+          <ChevronLeft size={16} className="hidden md:block" />
         </button>
       </div>
 

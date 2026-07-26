@@ -36,7 +36,7 @@ export function Dashboard() {
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-paper text-ink">
+    <div className="flex h-screen flex-col overflow-hidden bg-paper text-ink md:flex-row">
       <Sidebar
         snapshots={snapshots}
         loading={loading}
