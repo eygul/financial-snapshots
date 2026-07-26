@@ -101,7 +101,7 @@ export class SupabaseFinanceDataService implements FinanceDataService {
         // assets after this period's expenses. Change this in one place if
         // you'd rather define it differently (e.g. assets only, or assets
         // minus liabilities once a liabilities table exists).
-        netWorth: totalAssets - totalExpenses,
+        netWorth: totalAssets - totalExpenses + totalIncome,
         cashFlow: totalIncome - totalExpenses,
       },
     }
